@@ -1,0 +1,106 @@
+{
+  "name": "Monitor Report Errors",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6a9a5792-080d-4c31-af58-51fc85aede4b",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "32357224-ac33-480b-aca6-c49c6e1bbc4c",
+              "name": "content",
+              "value": "=[assessment id] Workflow Error Alert - Workflow: {{ $json.workflow.name }} | Error: {{ $json.execution.error.message }} | Last node: {{ $json.execution.lastNodeExecuted }} | Execution URL: {{ $json.execution.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d70643b0-644a-466f-88de-4d8033527e93",
+      "name": "BuildErrorMessage"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "cab0cefc-eeda-4cef-834d-2662cae12199",
+      "name": "NotifyDiscord",
+      "webhookId": "43c6ccd8-ed18-4704-9d9e-af0954325787",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "HgI85NktrKawIt31",
+          "name": "n8n Quickstart S2 Error Discord Webhook account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "BuildErrorMessage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BuildErrorMessage": {
+      "main": [
+        [
+          {
+            "node": "NotifyDiscord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e6387d41-b5a7-46e1-93ac-c2e434f38343",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a10607055aedf79010ddc3a6ead7ac3f270accebcd150dc97ffd917c0906f6f9"
+  },
+  "nodeGroups": [],
+  "id": "zBhOesMd3mn3dRgb",
+  "tags": [
+    {
+      "name": "n8n quickstart",
+      "id": "zzDZVtw4OekEwhKj",
+      "updatedAt": "2026-10-10T11:23:32.705Z",
+      "createdAt": "2026-10-10T11:23:32.705Z"
+    }
+  ]
+}
